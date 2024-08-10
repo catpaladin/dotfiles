@@ -11,10 +11,13 @@ if [ $(uname) = 'Darwin' ]; then
 else
   ALACRITTY=alacritty-linux
 fi
+
 # what directories should be installable by all users including the root user
 base=(
     nvim
     tmux
+    bash
+    zsh
     $ALACRITTY
 )
 
