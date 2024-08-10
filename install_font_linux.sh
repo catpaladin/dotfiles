@@ -9,7 +9,7 @@ else
 fi
 
 font=Hack
-version=v2.1.0
+version=v3.2.1
 zip=${font}.zip
 curl --fail --location --show-error https://github.com/ryanoasis/nerd-fonts/releases/download/${version}/${zip} --output ${zip}
 unzip -o -q -d ${fonts_dir} ${zip}

@@ -16,6 +16,12 @@ go install github.com/swaggo/swag/cmd/swag@latest
 curl -s https://ohmyposh.dev/install.sh | bash -s
 
 # Install python tools (requires rust cargo path)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-curl -LsSf https://astral.sh/ruff/install.sh | sh
-curl -sSf https://rye.astral.sh/get | bash
+if [ ! -f ~/.cargo/bin/uv ] ; then
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+if [ ! -f ~/.cargo/bin/ruff ] ; then
+  curl -LsSf https://astral.sh/ruff/install.sh | sh
+fi
+if [ ! -f ~/.rye/shims/rye ] ; then
+  curl -sSf https://rye.astral.sh/get | bash
+fi
