@@ -19,6 +19,8 @@ base=(
     bash
     zsh
     $ALACRITTY
+    backgrounds
+    wezterm
 )
 
 # run the stow command for the passed in directory ($2) in location $1
