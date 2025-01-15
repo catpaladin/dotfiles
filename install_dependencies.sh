@@ -25,3 +25,6 @@ fi
 if [ ! -f ~/.rye/shims/rye ] ; then
   curl -sSf https://rye.astral.sh/get | bash
 fi
+
+# rust tools
+cargo install ripgrep
