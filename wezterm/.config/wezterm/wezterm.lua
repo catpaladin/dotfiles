@@ -7,23 +7,18 @@ config.set_environment_variables = {
   PATH = "/opt/homebrew/bin:" .. os.getenv("PATH"),
 }
 
-if appearance.is_dark() then
-  config.color_scheme = "Tokyo Night"
-else
-  config.color_scheme = "Tokyo Night Day"
-end
-
+config.color_scheme = "Tokyo Night Storm"
 config.font = wezterm.font("Hack Nerd Font")
-config.font_size = 13
+config.font_size = 11
 
 -- background image
 -- replace with path to image to use
-config.window_background_image = wezterm.home_dir .. "/Pictures/retrowave.jpg"
-config.window_background_image_hsb = {
-  brightness = 0.05,
-  hue = 1.0,
-  saturation = 0.9,
-}
+-- config.window_background_image = wezterm.home_dir .. "/Pictures/retrowave.jpg"
+-- config.window_background_image_hsb = {
+--   brightness = 0.05,
+--   hue = 1.0,
+--   saturation = 0.9,
+-- }
 
 -- Slightly transparent and blurred background
 config.window_background_opacity = 0.9
