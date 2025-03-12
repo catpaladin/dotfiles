@@ -59,5 +59,12 @@ if [ -d "$HOME/.bun" ] ; then
   export PATH="$PATH:$BUN_INSTALL/bin"
 fi
 
+# nvm
+if [ -d "$HOME/.nvm" ] ; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
 # Keep this function as last, to avoid super long PATH
 dedupe_path

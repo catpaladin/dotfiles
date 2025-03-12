@@ -2,10 +2,15 @@
 
 Just some simple dotfiles of settings that I use on a daily basis.
 
-# Setup
+# Install & Setup
 ## Initial clone
 ```bash
 git clone --recurse-submodules https://github.com/catpaladin/dotfiles.git
+```
+
+## Setup settings with `stow`
+```bash
+./setup.sh
 ```
 
 ## Updating submodules
@@ -15,19 +20,33 @@ git submodule update --recursive --remote
 
 # Dependencies
 This repo requires several dependencies. It requires Nerd Fonts patched and greater than v3.
-For Linux, you can use the `install_font_linux.sh`.
+
+> [!NOTE]
+> For Linux, you can use the `install_font_linux.sh`.
 
 ## Dependencies Setup
-```
-./install_dependencies.sh
+### Go Development
+```bash
+./scripts/go-dev.sh
 ```
 
-# Install
-## Setup settings with `stow`
+### Typescript Development
 ```bash
-./setup.sh
+./scripts/typescript-dev.sh
+```
+
+### Rust Development
+```bash
+./scripts/rust-dev.sh
+```
+
+### Additional Stuff
+```bash
+./scripts/cloud-engineering.sh
 ```
 
 # Additional Setup
 ## tmux
-Remember to install plugins with `<tmux-prefix> + I`
+
+> [!IMPORTANT]
+> Remember to install plugins with `<tmux-prefix> + I`

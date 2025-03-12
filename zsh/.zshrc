@@ -37,3 +37,4 @@ source $ZSH/oh-my-zsh.sh
 for config_file (~/.zsh.d/*.zsh(N)); do
   source $config_file
 done
+
