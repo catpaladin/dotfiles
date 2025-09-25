@@ -102,11 +102,7 @@ pip install pyyaml \
   black \
   isort \
   mypy \
-  numpy \
-  pandas \
-  scikit-learn \
   boto3 \
-  jupyter \
   click \
   fastapi \
   uvicorn \
