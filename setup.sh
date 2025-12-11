@@ -51,10 +51,7 @@ base=(
     nvim
     tmux
     bash
-    zsh
     $ALACRITTY
-    backgrounds
-    wezterm
 )
 
 # Check if all directories exist
@@ -146,6 +143,31 @@ print_status "👤" "Stowing apps for user: ${YELLOW}$(whoami)${NC}"
 for app in ${base[@]}; do
     stowit "${HOME}" $app
 done
+
+# Stow zsh separately (only .zsh.d directory, .zshrc is not tracked)
+stowit "${HOME}" zsh
+
+# Ensure .zshrc sources .zsh.d files
+print_header "Configuring Zsh"
+ZSHRC_SOURCE_BLOCK='# Source dotfiles zsh configurations
+for config_file (~/.zsh.d/*.zsh(N)); do
+  source $config_file
+done'
+
+if [ -f "$HOME/.zshrc" ]; then
+  if ! grep -q "Source dotfiles zsh configurations" "$HOME/.zshrc"; then
+    print_status "🔄" "Adding .zsh.d sourcing to existing .zshrc..."
+    echo "" >> "$HOME/.zshrc"
+    echo "$ZSHRC_SOURCE_BLOCK" >> "$HOME/.zshrc"
+    print_status "✅" "${GREEN}Added .zsh.d sourcing to .zshrc${NC}"
+  else
+    print_status "✅" "${GREEN}.zshrc already sources .zsh.d files${NC}"
+  fi
+else
+  print_status "🔄" "Creating minimal .zshrc..."
+  echo "$ZSHRC_SOURCE_BLOCK" > "$HOME/.zshrc"
+  print_status "✅" "${GREEN}Created .zshrc with .zsh.d sourcing${NC}"
+fi
 
 print_header "Setup Complete"
 print_status "🎉" "${GREEN}All dotfiles have been configured successfully!${NC}"

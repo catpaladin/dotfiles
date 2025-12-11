@@ -1,4 +1,6 @@
+zsh/.zshrc
 zsh/.zsh.d/*.zsh
+!zsh/.zsh.d/core.zsh
 !zsh/.zsh.d/common_aliases.zsh
 !zsh/.zsh.d/functions.zsh
 !zsh/.zsh.d/paths.zsh

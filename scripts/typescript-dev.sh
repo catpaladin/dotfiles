@@ -1,36 +1,12 @@
 #!/usr/bin/env bash
+# TypeScript/Node.js development environment setup using NVM
 
-# Set color variables
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/common.sh"
 
-# Function to print status messages with emoji
-print_status() {
-  local emoji=$1
-  local message=$2
-  echo -e "${emoji} ${message}"
-}
+detect_os
 
-print_header() {
-  local title=$1
-  echo -e "\n${BLUE}================================${NC}"
-  echo -e "${BLUE}    ${title}    ${NC}"
-  echo -e "${BLUE}================================${NC}\n"
-}
-
-# Set the appropriate shell profile based on OS
 print_header "TypeScript Development Environment Setup"
-
-if [ $(uname) = 'Darwin' ]; then
-  SHELL_PROFILE=~/.zshrc
-  print_status "🍎" "Detected macOS: using ${YELLOW}${SHELL_PROFILE}${NC}"
-else
-  SHELL_PROFILE=~/.bashrc
-  print_status "🐧" "Detected Linux: using ${YELLOW}${SHELL_PROFILE}${NC}"
-fi
 
 # Install NVM (Node Version Manager)
 if [ ! -d "$HOME/.nvm" ]; then
@@ -66,18 +42,19 @@ else
 fi
 
 # Install Bun
-if ! command -v bun &> /dev/null; then
+if [ ! -d "$HOME/.bun" ]; then
   print_status "🔧" "${YELLOW}Installing Bun runtime...${NC}"
   curl -fsSL https://bun.sh/install | bash
-
-  # Load Bun in the current shell
-  export BUN_INSTALL="$HOME/.bun"
-  export PATH="$BUN_INSTALL/bin:$PATH"
-
   print_status "✅" "${GREEN}Bun installed successfully!${NC}"
 else
-  print_status "✅" "${GREEN}Bun $(bun --version) is already installed.${NC}"
+  print_status "✅" "${GREEN}Bun is already installed.${NC}"
 fi
+
+# Load Bun in the current shell
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+print_status "✅" "${GREEN}Bun $(bun --version) ready!${NC}"
 
 # Install TypeScript
 print_status "🔧" "${YELLOW}Installing TypeScript globally...${NC}"

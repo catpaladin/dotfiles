@@ -1,49 +1,22 @@
 #!/usr/bin/env bash
+# Go development environment setup using goenv
 
-# Set color variables
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/common.sh"
 
-# Function to print status messages with emoji
-print_status() {
-  local emoji=$1
-  local message=$2
-  echo -e "${emoji} ${message}"
-}
+detect_os
 
-print_header() {
-  local title=$1
-  echo -e "\n${BLUE}================================${NC}"
-  echo -e "${BLUE}    ${title}    ${NC}"
-  echo -e "${BLUE}================================${NC}\n"
-}
-
-# Set the appropriate shell profile based on OS
 print_header "Go Development Environment Setup"
-
-if [ $(uname) = 'Darwin' ]; then
-  SHELL_PROFILE=~/.zshenv
-  print_status "🍎" "Detected macOS: using ${YELLOW}${SHELL_PROFILE}${NC}"
-else
-  SHELL_PROFILE=~/.bash_profile
-  print_status "🐧" "Detected Linux: using ${YELLOW}${SHELL_PROFILE}${NC}"
-fi
 
 # Install goenv for Go version management
 if [ ! -f ~/.goenv/bin/goenv ]; then
   print_status "🔄" "${YELLOW}Installing goenv for Go version management...${NC}"
   git clone https://github.com/go-nv/goenv.git ~/.goenv
 
-  # Check if the lines already exist before adding them
-  if ! grep -q "GOENV_ROOT" ${SHELL_PROFILE}; then
-    echo 'export GOENV_ROOT="$HOME/.goenv"' >> ${SHELL_PROFILE}
-    echo 'export PATH="$GOENV_ROOT/bin:$PATH"' >> ${SHELL_PROFILE}
-    echo 'eval "$(goenv init -)"' >> ${SHELL_PROFILE}
-    print_status "✏️" "Added goenv to ${YELLOW}${SHELL_PROFILE}${NC}"
-  fi
+  # Add goenv to shell profile
+  add_to_profile 'export GOENV_ROOT="$HOME/.goenv"' "GOENV_ROOT"
+  add_to_profile 'export PATH="$GOENV_ROOT/bin:$PATH"'
+  add_to_profile 'eval "$(goenv init -)"'
 
   print_status "✅" "${GREEN}goenv installed successfully!${NC}"
   print_status "💡" "To use goenv in this session, run: ${YELLOW}source ${SHELL_PROFILE}${NC}"
@@ -88,9 +61,6 @@ else
 
   print_status "🔧" "${YELLOW}Installing Oh My Posh...${NC}"
   curl -s https://ohmyposh.dev/install.sh | bash -s
-
-  print_status "🔧" "${YELLOW}Installing Hugo (with CGO enabled)...${NC}"
-  CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
 
   print_status "✅" "${GREEN}All tools installed successfully!${NC}"
 fi

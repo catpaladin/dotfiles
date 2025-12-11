@@ -1,52 +1,90 @@
 # Dotfiles
 
-Just some simple dotfiles of settings that I use on a daily basis.
+Personal dotfiles for development environments, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
-# Install & Setup
-## Initial clone
+## What's Included
+
+| Directory | Description |
+|-----------|-------------|
+| `nvim/` | Neovim configuration |
+| `tmux/` | tmux configuration |
+| `zsh/` | Zsh configuration (`.zsh.d/` modules) |
+| `bash/` | Bash configuration |
+| `alacritty-darwin/` | Alacritty terminal config (macOS) |
+| `alacritty-linux/` | Alacritty terminal config (Linux) |
+| `scripts/` | Development environment setup scripts |
+
+## Installation
+
+### 1. Clone the repository
 ```bash
 git clone --recurse-submodules https://github.com/catpaladin/dotfiles.git
+cd dotfiles
 ```
 
-## Setup settings with `stow`
+### 2. Run setup
 ```bash
 ./setup.sh
 ```
 
-## Updating submodules
+This will:
+- Symlink all configuration files to your home directory using `stow`
+- Back up any existing conflicting files
+- Configure your `.zshrc` to source the `.zsh.d/` modules
+
+### 3. Update submodules (if needed)
 ```bash
 git submodule update --recursive --remote
 ```
 
-# Dependencies
-This repo requires several dependencies. It requires Nerd Fonts patched and greater than v3.
+## Prerequisites
+
+- [GNU Stow](https://www.gnu.org/software/stow/) - Install via `brew install stow` (macOS) or `apt install stow` (Linux)
+- [Nerd Fonts](https://www.nerdfonts.com/) v3+ - Required for icons in terminal
 
 > [!NOTE]
-> For Linux, you can use the `install_font_linux.sh`.
+> For Linux, you can use `./scripts/install-font-linux.sh` to install Nerd Fonts.
 
-## Dependencies Setup
+## Development Environment Scripts
+
+Setup scripts for various development environments. Each script installs version managers and essential tools.
+
+### Python Development
+```bash
+./scripts/python-dev.sh
+```
+Installs: `pyenv`, latest Python, `black`, `isort`, `mypy`, `ruff`, `pytest`, `ipython`
+
+### Terraform Development
+```bash
+./scripts/terraform-dev.sh
+```
+Installs: `tfenv`, latest Terraform, `tflint`, `terraform-docs`
+
 ### Go Development
 ```bash
 ./scripts/go-dev.sh
 ```
+Installs: `goenv`, `golangci-lint`, `golines`, `gofumpt`, `cobra-cli`, `air`, `swag`
 
-### Typescript Development
+### TypeScript/Node.js Development
 ```bash
 ./scripts/typescript-dev.sh
 ```
+Installs: `nvm`, Node.js LTS, `yarn`, `bun`, `typescript`, `ts-node`, `eslint`, `prettier`
 
 ### Rust Development
 ```bash
 ./scripts/rust-dev.sh
 ```
 
-### Additional Stuff
-```bash
-./scripts/cloud-engineering.sh
-```
+## Post-Installation
 
-# Additional Setup
-## tmux
+### tmux
 
 > [!IMPORTANT]
-> Remember to install plugins with `<tmux-prefix> + I`
+> After setup, open tmux and install plugins with `<prefix> + I`
+
+### Zsh
+
+Your custom zsh configurations live in `~/.zsh.d/`. The setup script ensures your `.zshrc` sources all `*.zsh` files from this directory, so install scripts can modify `.zshrc` without affecting your tracked configurations.
