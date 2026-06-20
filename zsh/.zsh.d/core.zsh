@@ -3,13 +3,19 @@ export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$ZSH/custom"
 
 # History settings
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
 # History options
 setopt HIST_IGNORE_DUPS       # Don't save duplicate commands
 setopt HIST_IGNORE_SPACE      # Don't save commands starting with space
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
+setopt APPEND_HISTORY
 setopt SHARE_HISTORY          # Share history between all sessions
+
+setopt AUTOCD
+setopt NOBEEP
 
 # Install custom plugins if not exist
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] ; then

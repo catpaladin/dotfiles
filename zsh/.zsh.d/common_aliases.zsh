@@ -1,7 +1,10 @@
-alias ll="ls -alF --color=auto"
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias ls="eza --icons"
+alias ll="eza -lh --icons --git"
+alias la="eza -lah --icons --git"
+alias tree="eza --tree --icons"
+
+alias grep='rg --color=auto'
+alias diff='diff --color=auto'
 alias k="kubectl"
 
 # Suffix aliases — type a filename (no command) and it opens with the associated tool

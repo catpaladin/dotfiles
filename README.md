@@ -36,6 +36,7 @@ mkdir -p ~/.config
 ln -s "$(pwd)/nvim/.config/nvim" ~/.config/nvim
 
 # 4. Install dev environments (optional, pick what you need)
+./scripts/install-core-tools.sh   # core CLI tools the aliases depend on
 ./scripts/python-dev.sh
 ./scripts/go-dev.sh
 ./scripts/rust-dev.sh
@@ -54,16 +55,20 @@ exec zsh
 |------|---------|---------|
 | [GNU Stow](https://www.gnu.org/software/stow/) | Symlink farm management | `brew install stow` / `apt install stow` |
 | [Nerd Fonts](https://www.nerdfonts.com/) v3+ | Icons in terminal & tmux | `brew install --cask font-hack-nerd-font` (macOS) or `./scripts/install-font-linux.sh` (Linux) |
+| [eza](https://github.com/eza-community/eza) | Modern `ls` replacement (`ls`/`ll`/`la`/`tree` aliases) | `brew install eza` / `apt install eza` (Ubuntu 24.04+; otherwise see [eza docs](https://github.com/eza-community/eza#installation)) |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | Recursive search (`grep` alias → `rg`) | `brew install ripgrep` / `apt install ripgrep` (also installed by `./scripts/rust-dev.sh`) |
 | [fzf](https://github.com/junegunn/fzf) | Fuzzy finder (Ctrl-R, Ctrl-T, Alt-C) | `brew install fzf` / `apt install fzf` |
 | [fd](https://github.com/sharkdp/fd) | Fast file finder (used by fzf) | `brew install fd` / `apt install fd-find` |
-| [bat](https://github.com/sharkdp/bat) | Syntax-highlighted file viewer | `brew install bat` / `apt install bat` |
+| [bat](https://github.com/sharkdp/bat) | Syntax-highlighted file viewer (suffix aliases) | `brew install bat` / `apt install bat` |
 | [starship](https://starship.rs/) | Cross-shell prompt | `brew install starship` / `curl -sS https://starship.rs/install.sh \| sh` |
-| [jless](https://github.com/PaulJuliusMartinez/jless) | Interactive JSON viewer | `brew install jless` |
+| [jless](https://github.com/PaulJuliusMartinez/jless) | Interactive JSON viewer (`.json` suffix alias) | `brew install jless` |
 
 > [!NOTE]
 > The setup script will warn and skip gracefully if some tools are missing,
 > but the shell integrations (fzf, starship, suffix aliases) won't activate
-> until the tools are installed.
+> until the tools are installed. Run `./scripts/install-core-tools.sh` to
+> bootstrap all of the core CLI tools the zsh aliases depend on (eza, ripgrep,
+> bat, fd, fzf, starship, jless).
 
 ---
 
@@ -91,6 +96,7 @@ dotfiles/
 ├── alacritty-linux/             # Alacritty config (Linux)
 └── scripts/
     ├── lib/common.sh            # Shared helpers (colors, detect_os, etc.)
+    ├── install-core-tools.sh    # Core CLI tools (eza, ripgrep, bat, fd, fzf, starship, jless)
     ├── python-dev.sh            # Python via uv
     ├── go-dev.sh                # Go via goenv
     ├── rust-dev.sh              # Rust via rustup + cargo tools
@@ -111,7 +117,7 @@ degrades if its tool isn't installed.
 
 | Module | What it does |
 |--------|-------------|
-| `common_aliases.zsh` | Standard aliases (`ll`, `k`) + suffix aliases for file-type-based opening |
+| `common_aliases.zsh` | `eza`-based `ls`/`ll`/`la`/`tree`, `rg`-backed `grep`, `kubectl` alias, suffix aliases for file-type-based opening |
 | `core.zsh` | History settings, oh-my-zsh plugin loading (autosuggestions, syntax-highlighting) |
 | `editor.zsh` | Sets `$EDITOR=nvim`, binds Ctrl-X Ctrl-E to edit-and-execute |
 | `fzf.zsh` | fzf shell integration, fd integration, Tokyo Night theme, Tab completion |
@@ -149,11 +155,20 @@ To override a suffix alias for a single use, prefix with a command:
 
 #### Standard Aliases
 
-| Alias | Command |
-|-------|---------|
-| `ll` | `ls -alF --color=auto` |
-| `k` | `kubectl` |
-| `grep` | `grep --color=auto` |
+| Alias | Command | Requires |
+|-------|---------|----------|
+| `ls` | `eza --icons` | eza |
+| `ll` | `eza -lh --icons --git` | eza (+ git for the `--git` column) |
+| `la` | `eza -lah --icons --git` | eza (+ git) |
+| `tree` | `eza --tree --icons` | eza |
+| `grep` | `rg --color=auto` | ripgrep |
+| `diff` | `diff --color=auto` | coreutils |
+| `k` | `kubectl` | kubectl |
+
+> [!NOTE]
+> The `ll`/`la` aliases pass `--git` to eza, which adds a per-file git
+> status column. Outside a git repo (or without git installed) the column is
+> simply empty — the aliases still work.
 
 ### PATH Management
 
@@ -178,6 +193,24 @@ guarded with a directory existence check so missing tools don't cause errors:
 Each script sources `scripts/lib/common.sh` for shared helpers (`print_status`,
 `detect_os`, `command_exists`, `add_to_profile`). They are idempotent — safe to
 re-run.
+
+### Core CLI Tools
+
+```bash
+./scripts/install-core-tools.sh
+```
+
+Installs the cross-cutting CLI tools that the zsh aliases and modules depend on
+but that aren't covered by the per-language dev scripts. Idempotent and safe to
+re-run.
+
+- **eza** — `ls`/`ll`/`la`/`tree` aliases (brew, or apt on Ubuntu 24.04+)
+- **ripgrep** (`rg`) — `grep` alias (brew / apt; also installed by `rust-dev.sh`)
+- **bat** — suffix aliases for source/config files (brew / apt)
+- **fd** — file finder used by fzf (brew / apt; apt ships it as `fdfind`, symlinked to `~/.local/bin/fd`)
+- **fzf** — fuzzy finder, Ctrl-R/Ctrl-T/Alt-C (brew / apt)
+- **starship** — cross-shell prompt (`curl -sS https://starship.rs/install.sh`)
+- **jless** — `.json` suffix alias (brew / apt)
 
 ### Python
 
