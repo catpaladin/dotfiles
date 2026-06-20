@@ -19,15 +19,30 @@ if [ ! -f ~/.goenv/bin/goenv ]; then
   add_to_profile 'eval "$(goenv init -)"'
 
   print_status "✅" "${GREEN}goenv installed successfully!${NC}"
-  print_status "💡" "To use goenv in this session, run: ${YELLOW}source ${SHELL_PROFILE}${NC}"
 else
   print_status "✅" "${GREEN}goenv is already installed.${NC}"
 fi
 
-# Check if Go is installed
+# Initialize goenv for current session
+print_status "🔄" "Initializing goenv for current session..."
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+
+# Install latest stable Go version with goenv
+print_status "📥" "${YELLOW}Installing latest stable Go version...${NC}"
+LATEST_GO=$(goenv install --list | grep -E '^\s*[0-9]+\.[0-9]+\.[0-9]+$' | tail -1 | tr -d ' ')
+if [ -n "$LATEST_GO" ]; then
+  goenv install -s "$LATEST_GO"
+  goenv global "$LATEST_GO"
+  print_status "✅" "${GREEN}Go $(go version) installed!${NC}"
+else
+  print_status "⚠️" "${YELLOW}Could not determine latest Go version${NC}"
+fi
+
+# Check if Go is available now
 if ! command -v go &> /dev/null; then
-  print_status "⚠️" "${YELLOW}Go is not installed or not in your PATH.${NC}"
-  print_status "💡" "After sourcing your profile, install Go with: ${YELLOW}goenv install [version]${NC}"
+  print_status "⚠️" "${YELLOW}Go is not in your PATH. Run: source ${SHELL_PROFILE}${NC}"
 else
   print_status "🎉" "${GREEN}Go is installed:${NC} $(go version)"
 
@@ -58,9 +73,6 @@ else
 
   print_status "🔧" "${YELLOW}Installing Swag for API documentation...${NC}"
   go install github.com/swaggo/swag/cmd/swag@latest
-
-  print_status "🔧" "${YELLOW}Installing Oh My Posh...${NC}"
-  curl -s https://ohmyposh.dev/install.sh | bash -s
 
   print_status "✅" "${GREEN}All tools installed successfully!${NC}"
 fi

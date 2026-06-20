@@ -5,3 +5,5 @@ zsh/.zsh.d/*.zsh
 !zsh/.zsh.d/functions.zsh
 !zsh/.zsh.d/paths.zsh
 !zsh/.zsh.d/prompt.zsh
+!zsh/.zsh.d/fzf.zsh
+!zsh/.zsh.d/editor.zsh

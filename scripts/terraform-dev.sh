@@ -38,11 +38,21 @@ print_header "Terraform Development Tools"
 # Install tflint
 if ! command_exists tflint; then
   print_status "🔧" "${YELLOW}Installing tflint (Terraform linter)...${NC}"
-  if [ "$IS_MACOS" = true ]; then
-    brew install tflint
-  else
-    curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-  fi
+  # tflint's Homebrew tap is deprecated; use the official install script for both platforms.
+  # Install to ~/.local/bin (already in PATH via paths.zsh) to avoid needing sudo.
+  mkdir -p "$HOME/.local/bin"
+  TFLINT_VERSION=$(curl -sSfL -o /dev/null -w '%{url_effective}' https://github.com/terraform-linters/tflint/releases/latest | grep -o '[^/]*$')
+  ARCH=$(uname -m)
+  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+  case "$ARCH" in
+    x86_64)  ARCH="amd64" ;;
+    aarch64|arm64) ARCH="arm64" ;;
+  esac
+  curl -sSfL -o /tmp/tflint.zip "https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_${OS}_${ARCH}.zip"
+  unzip -o -d /tmp/tflint-extract /tmp/tflint.zip
+  cp /tmp/tflint-extract/tflint "$HOME/.local/bin/"
+  chmod +x "$HOME/.local/bin/tflint"
+  rm -rf /tmp/tflint.zip /tmp/tflint-extract
   print_status "✅" "${GREEN}tflint installed!${NC}"
 else
   print_status "✅" "${GREEN}tflint is already installed.${NC}"

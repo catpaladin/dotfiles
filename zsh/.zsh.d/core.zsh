@@ -22,15 +22,6 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] ; then
 fi
 source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
-#source $ZSH/oh-my-zsh.sh
+# NOTE: oh-my-zsh's plugin loader (source $ZSH/oh-my-zsh.sh) is intentionally
+# not called. The custom plugins above are sourced manually for faster startup
+# and finer control. The plugins array is unused.

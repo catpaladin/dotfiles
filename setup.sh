@@ -47,8 +47,9 @@ else
 fi
 
 # what directories should be installable by all users including the root user
+# NOTE: nvim is a git submodule but is NOT stowed — symlink it manually:
+#   ln -s "$(pwd)/nvim/.config/nvim" ~/.config/nvim
 base=(
-    nvim
     tmux
     bash
     $ALACRITTY

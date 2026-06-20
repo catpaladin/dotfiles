@@ -33,7 +33,7 @@ detect_os() {
   else
     export IS_MACOS=false
     export IS_LINUX=true
-    export SHELL_PROFILE=~/.bashrc
+    export SHELL_PROFILE=~/.zshrc
     print_status "🐧" "Detected Linux: using ${YELLOW}${SHELL_PROFILE}${NC}"
   fi
 }

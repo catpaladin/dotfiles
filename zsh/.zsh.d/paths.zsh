@@ -13,17 +13,16 @@ fi
 # Rust
 if [ -d "$HOME/.cargo/bin" ] ; then
   export PATH="$PATH:$HOME/.cargo/bin"
-  # for setting up python tools
-  . "$HOME/.rye/env"
   . "$HOME/.cargo/env"
 fi
 
-# Python (pyenv)
-if [ -d "$HOME/.pyenv" ] ; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PATH:$PYENV_ROOT/bin"
-  eval "$(pyenv init -)"
+# Rye (Python package manager)
+if [ -f "$HOME/.rye/env" ] ; then
+  . "$HOME/.rye/env"
 fi
+
+# Python (uv) — uv binary and uv-installed tools live in ~/.local/bin
+# which is already on PATH via the block above. No extra config needed.
 
 # Go (goenv)
 if [ -d "$HOME/.goenv" ] ; then

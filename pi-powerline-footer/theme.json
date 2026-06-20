@@ -1,0 +1,20 @@
+{
+  "colors": {
+    "model": "#bb9af7",
+    "shellMode": "#7aa2f7",
+    "path": "#7dcfff",
+    "gitClean": "#9ece6a",
+    "gitDirty": "#e0af68",
+    "thinking": "#565f89",
+    "thinkingMinimal": "#565f89",
+    "thinkingLow": "#e0af68",
+    "thinkingMedium": "#9ece6a",
+    "context": "#565f89",
+    "contextWarn": "#e0af68",
+    "contextError": "#f7768e",
+    "cost": "#c0caf5",
+    "tokens": "#a9b1d6",
+    "separator": "#565f89",
+    "border": "#414868"
+  }
+}

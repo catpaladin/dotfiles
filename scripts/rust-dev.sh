@@ -1,27 +1,12 @@
 #!/usr/bin/env bash
+# Rust development environment setup
+# Installs rustup, Rust toolchain, ripgrep, and Python tools (uv, ruff, rye)
 
-# Set color variables
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RED='\033[0;31m'
-YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/common.sh"
 
-# Function to print status messages with emoji
-print_status() {
-  local emoji=$1
-  local message=$2
-  echo -e "${emoji} ${message}"
-}
+detect_os
 
-print_header() {
-  local title=$1
-  echo -e "\n${BLUE}================================${NC}"
-  echo -e "${BLUE}    ${title}    ${NC}"
-  echo -e "${BLUE}================================${NC}\n"
-}
-
-# Check for Rust installation
 print_header "Rust Setup Script"
 
 if command -v rustc &> /dev/null; then
